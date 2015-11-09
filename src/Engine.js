@@ -1,3 +1,4 @@
+// author : Amaury Dubois
 'use strict';
 
 var Engine = function () {
