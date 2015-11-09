@@ -4,14 +4,9 @@
 var Engine = function () {
     var plateau;
     var size = 0;
-    var Black = 1;
-    var Red = 2;
-    var Green = 3;
-    var Blue = 4;
-    var White = 5;
-    var Yellow = 6;
+    var color;
 // private attributes and methods
-    var color ={black :0, green :1, white:2 , blue: 3 , red: 4, yel: 5};
+    color ={black :0, green :1, white:2 , blue: 3 , red: 4, yel:5};
     var placeColor = function () {
         plateau = [
             [color.black,color.green,color.white,color.blue,color.red,color.white],
@@ -42,6 +37,8 @@ var Engine = function () {
     this.getSize = function(){
         return size;
     };
-
+    this.getColor = function () {
+        return color;
+    }
     init();
 };
