@@ -11,14 +11,16 @@ var Engine = function () {
     var White = 5;
     var Yellow = 6;
 // private attributes and methods
-
+    var color ={black :0, green :1, white:2 , blue: 3 , red: 4, yel: 5};
     var placeColor = function () {
-        plateau[0][0] = plateau [2][4] = plateau [3][1] = plateau [4][3] = plateau[5][2] =plateau [5][5] = Black;
-        plateau[0][4] = plateau [1][3] = plateau [3][0] = plateau [3][2] = plateau[5][3] = Red;
-        plateau[0][1] = plateau [1][2] = plateau [3][3] = plateau [4][1] = plateau[4][5] =plateau [5][4] = Green;
-        plateau[0][3] = plateau [1][5] = plateau [2][0] = plateau [2][2] = plateau[3][4] =plateau [5][1] = Blue;
-        plateau[0][2] = plateau [0][5] = plateau [1][1] = plateau [2][3] = plateau[4][5] =plateau [4][0] = White;
-        plateau[1][0] = plateau [1][4] = plateau [2][1] = plateau [4][2] = plateau[4][4] =plateau [0][5] = Yellow;
+        plateau = [
+            [color.black,color.green,color.white,color.blue,color.red,color.white],
+            [color.yel,color.white,color.green,color.red,color.yel,color.blue],
+            [color.blue,color.yel,color.blue,color.white,color.black,color.red],
+            [color.red,color.black,color.red,color.green,color.blue,color.white],
+            [color.white,color.green,color.yel,color.black,color.yel,color.green],
+            [color.yel,color.blue,color.black,color.red,color.green,color.black]
+            ];
     };
 
     var init = function(){
