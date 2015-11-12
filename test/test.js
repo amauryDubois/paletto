@@ -50,5 +50,5 @@ PalettoTestCase.prototype.testStory4 = function () {
 PalettoTestCase.prototype.testStory5 = function () {
     var e = new  Engine();
 
-    assert
+    e.play("F6");
 };
