@@ -87,7 +87,7 @@ var Engine = function () {
 
     this.play = function (coord) {
         var coup = this.convertCoup(coord);
-        console.log(coup.line +" "+coup.colone);
+
         this.setPlayerScore(this.getCase(coup.line, coup.colone));
         this.setCase(coup.line, coup.colone, 'X');
         nbCase -= 1;
