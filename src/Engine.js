@@ -58,7 +58,7 @@ var Engine = function () {
     this.setPlayerScore = function (pickcolor) {
         var p = this.getCurrentPlayer(), c = this.getColor(), color, player = this.getCurrentPlayer();
         for (var couleur in c) {
-            if (pickcolor == c[couleur]) {
+            if (pickcolor === c[couleur]) {
                 color = couleur;
             }
         }
