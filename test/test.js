@@ -27,3 +27,11 @@ PalettoTestCase.prototype.testStory3 = function () {
     assertTrue(e.getCaseCoord("A6") =="-1");
 
 };
+
+PalettoTestCase.prototype.testStory4 = function () {
+    var e = new  Engine();
+
+    assertTrue(e.getnBCase() === 25);
+
+
+};
