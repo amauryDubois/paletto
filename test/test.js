@@ -45,5 +45,10 @@ PalettoTestCase.prototype.testStory4 = function () {
 
     assertTrue(e.getCurrentPlayer() === 0);
     assertTrue(e.getnBCase() === 33);
+};
 
+PalettoTestCase.prototype.testStory5 = function () {
+    var e = new  Engine();
+
+    assert
 };
