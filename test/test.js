@@ -24,14 +24,27 @@ PalettoTestCase.prototype.testStory3 = function () {
     var e = new  Engine();
     e.play("A6");
     assertTrue(e.getnBCase() === 35);
-    assertTrue(e.getCaseCoord("A6") =="-1");
+    assertTrue(e.getCaseCoord("A6") == 'X');
+
 
 };
 
 PalettoTestCase.prototype.testStory4 = function () {
-    var e = new  Engine();
+    var e = new  Engine(), c;
+    e.play("A6");
+    var possible = e.getAllowColors();
+    assertTrue(possible.indexOf('black') !==-1 );
+    assertTrue(possible.indexOf('white') !==-1 );
+    assertTrue(possible.indexOf('blue') !==-1 );
+    e.changeTurn();
+    assertTrue(e.getCurrentPlayer() === 1);
 
-    assertTrue(e.getnBCase() === 25);
+    e.play("A1");
+    e.play("F6");
+    assertTrue(e.getPlayerScore().black === 2);
+    e.changeTurn();
 
+    assertTrue(e.getCurrentPlayer() === 0);
+    assertTrue(e.getnBCase() === 33);
 
 };
