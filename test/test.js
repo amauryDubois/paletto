@@ -19,3 +19,9 @@ PalettoTestCase.prototype.testStory2 = function () {
     console.log(e.getCase(5,0));
     assertTrue(e.getCase(5,0) === e.getColor().yel);
 };
+
+PalettoTestCase.prototype.testStory3 = function () {
+    var e = new  Engine();
+
+    assertTrue(e.nbCase() === 35);
+};
