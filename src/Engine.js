@@ -2,7 +2,7 @@
 'use strict';
 
 var Engine = function (intermediaire) {
-    var plateau, size = 0, nbCase, color, players = [], current;
+    var plateau, size = 0, nbCase, color, players = [], current, nbBille;
 
 // private attributes and methods
     color = {black: 0, green: 1, white: 2, blue: 3, red: 4, yel: 5};
@@ -46,6 +46,7 @@ var Engine = function (intermediaire) {
         players[1] = {black: 0, green: 0, white: 0, blue: 0, red: 0, yel: 0};
         current = 0;
         nbCase = 36;
+        nbBille = 36;
         plateau = new Array(6);
         size = 6;
 
@@ -55,7 +56,7 @@ var Engine = function (intermediaire) {
         placeColor();
     };
     var merde = function (caca, vaTeFaire) {
-        if (caca.indexOf(vaTeFaire) == -1) {
+        if (caca.indexOf(vaTeFaire) === -1) {
             caca.push(vaTeFaire);
         }
     };
@@ -109,8 +110,8 @@ var Engine = function (intermediaire) {
     };
     var allowToPlay = function (coup) {
 
-       var cpt =  compterVoisin(coup.line, coup.colone);
-        if (cpt === 1 ){
+        var cpt = compterVoisin(coup.line, coup.colone);
+        if (cpt === 1) {
             return true;
         }
     };
@@ -124,14 +125,14 @@ var Engine = function (intermediaire) {
     this.play = function (coord) {
         var coup = this.convertCoup(coord);
         allowToPlay(coup);
-        if(this.possible(coup)){
-            console.log("c bon");
+        if (this.possible(coup)) {
+
             this.setPlayerScore(this.getCase(coup.line, coup.colone));
             this.setCase(coup.line, coup.colone, 'X');
             nbCase -= 1;
             return true;
-        }else{
-            console.log("c pas bon");
+        } else {
+
             return false;
         }
 
@@ -141,9 +142,9 @@ var Engine = function (intermediaire) {
     this.possible = function (coup) {
         var cpt = compterVoisin(coup.line, coup.colone);
         console.log("voisin" + cpt);
-        if ( cpt === 1 ) return true;
-        if (cpt > 2 ) return false;
-        return  this.otherwise(coup);
+        if (cpt <= 1) return true;
+        if (cpt > 2) return false;
+        return this.otherwise(coup);
     };
     this.getCurrentPlayer = function () {
         return current;
@@ -202,10 +203,10 @@ var Engine = function (intermediaire) {
     this.otherwise = function (coup) {
         var cpt = 0;
         cpt = compterVoisinBas(coup.line, coup.colone) + compterVoisinHaut(coup.line, coup.colone);
-        if ( cpt === 2) return false ;
+        if (cpt === 2) return false;
         cpt = 0;
         cpt = compterVoisinGauche(coup.line, coup.colone) + compterVoisindroit(coup.line, coup.colone);
-        if ( cpt === 2 ) return false ;
+        if (cpt === 2) return false;
         return this.diagonal(coup);
     };
     this.diagonal = function (coup) {
@@ -219,46 +220,51 @@ var Engine = function (intermediaire) {
         if (cpt === 2) return this.diagonalBG(coup);
     };
     this.diagonalHD = function (coup) {
-        if( this.getCase(coup.line-1, coup.colone+1) != "X" ){
+        if (this.getCase(coup.line - 1, coup.colone + 1) != "X") {
             return true;
         }
         return false;
     };
     this.diagonalHG = function (coup) {
-        if( this.getCase(coup.line-1, coup.colone-1) != "X" ){
+        if (this.getCase(coup.line - 1, coup.colone - 1) != "X") {
             return true;
         }
         return false;
     };
     this.diagonalBD = function (coup) {
-        console.log(this.getCase(coup.line+1, coup.colone+1) );
-        if( this.getCase(coup.line+1, coup.colone+1) != "X" ){
+        console.log(this.getCase(coup.line + 1, coup.colone + 1));
+        if (this.getCase(coup.line + 1, coup.colone + 1) != "X") {
             return true;
         }
         return false;
     };
     this.diagonalBG = function (coup) {
-        if( this.getCase(coup.line+1, coup.colone-1) != "X" ){
+        if (this.getCase(coup.line + 1, coup.colone - 1) != "X") {
             return true;
         }
         return false;
     };
 
-    this.CheckIfWin = function(){
+    this.CheckIfWin = function () {
         var score = this.getPlayerScore();
 
-        for (var i in score){
-            console.log("score"+score[i]);
-            if (score[i] === 6){
+        for (var i in score) {
+            console.log("score" + score[i]);
+            if (score[i] === 6) {
                 return true;
             }
         }
-            return false;
+        return false;
     };
 
-    if (intermediaire){
+    this.CheckNull = function () {
+        var res = this.getnBCase();
+        return (res === 0 ) ? true : false;
+    };
+
+    if (intermediaire) {
         initI();
-    }else{
+    } else {
         init();
     }
 
