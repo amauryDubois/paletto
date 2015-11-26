@@ -53,3 +53,8 @@ PalettoTestCase.prototype.testStory5 = function () {
     assertFalse(e.play("C3"));
     assertTrue(e.getnBCase() === 13);
 };
+
+PalettoTestCase.prototype.testStory6 = function () {
+    var e = new  Engine(true);
+ 
+};
