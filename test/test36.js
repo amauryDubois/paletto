@@ -15,7 +15,7 @@ PalettoTestCase.prototype.testStory1 = function () {
 };
 
 PalettoTestCase.prototype.testStory2 = function () {
-    var e = new  Engine(false);
+    var e = new  Engine(false,false);
     assertTrue(e.getCase(5,0) === e.getColor().yel);
 };
 

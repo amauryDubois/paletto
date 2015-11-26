@@ -1,11 +1,13 @@
 // author : Amaury Dubois
 'use strict';
 
-var Engine = function (intermediaire) {
-    var plateau, size = 0, nbCase, color, players = [], current, nbBille;
+var Engine = function (intermediaire, xl) {
+    var plateau, size = 0, nbCase, color, players = [], current, nbBille, numToColor = [],colors,winner,balls,board;
 
 // private attributes and methods
-    color = {black: 0, green: 1, white: 2, blue: 3, red: 4, yel: 5};
+    color = {black: 0, green: 1, white: 2, blue: 3, red: 4, yel: 5, orange: 6, pink: 7, empty: 8};
+
+
     var placeColor = function () {
         plateau = [
             [color.black, color.green, color.white, color.blue, color.red, color.white],
@@ -16,6 +18,7 @@ var Engine = function (intermediaire) {
             [color.yel, color.blue, color.black, color.red, color.green, color.black]
         ];
     };
+
     var placeColorI = function () {
         plateau = [
             ['X', 'X', 'X', color.blue, color.red, color.white],
@@ -26,6 +29,7 @@ var Engine = function (intermediaire) {
             ['X', 'X', color.black, 'X', 'X', 'X']
         ];
     };
+
     var initI = function () {
         var i;
         players[0] = {black: 0, green: 0, white: 0, blue: 0, red: 0, yel: 0};
@@ -40,6 +44,7 @@ var Engine = function (intermediaire) {
         }
         placeColorI();
     };
+
     var init = function () {
         var i;
         players[0] = {black: 0, green: 0, white: 0, blue: 0, red: 0, yel: 0};
@@ -55,6 +60,95 @@ var Engine = function (intermediaire) {
         }
         placeColor();
     };
+
+    var isPossible = function (pickedColor, lin, col) {
+        var possible = true;
+
+        if (lin > 0) {
+            possible = possible && (board[lin - 1][col] !== pickedColor);
+        }
+        if (col > 0) {
+            possible = possible && (board[lin][col - 1] !== pickedColor);
+        }
+
+        return possible;
+    };
+
+    var convertColor = function (colorCode) {
+        var key, color;
+
+        for (key in colors) {
+            //noinspection JSUnfilteredForInLoop
+            if (colorCode === colors[key]) {
+                color = key;
+                break;
+            }
+        }
+
+        return color;
+    };
+    var putRandomColor = function (lin, col, colorCount) {
+        var pickedColor, fail = 0;
+
+        do {
+            fail += 1;
+            pickedColor = Math.floor((Math.random() * 8)) + 1;
+        } while (!((colorCount[convertColor(pickedColor)] > 0 && isPossible(pickedColor, lin, col)) || fail >= 100));
+
+        if (fail >= 100) {
+            return true;
+        }
+
+        board[lin][col] = colors[convertColor(pickedColor)];
+        colorCount[convertColor(pickedColor)] -= 1;
+
+        return false;
+    };
+    var create2DArray = function () {
+        var i;
+        board = new Array(size);
+        for (i = 0; i < size; ++i) {
+            board[i] = new Array(size);
+        }
+    };
+    var initRandomBoard = function () {
+        var lin, col;
+        var fail = false;
+        var colorCount = {};
+
+        create2DArray();
+
+        do {
+            colorCount = {bla: 8, gre: 8, whi: 8, blu: 8, red: 8, yel: 8, pin: 8, ora: 8};
+
+            for (lin = 0; lin < size; ++lin) {
+                for (col = 0; col < size; ++col) {
+                    fail = putRandomColor(lin, col, colorCount);
+                    if (fail) {
+                        break;
+                    }
+                }
+                if (fail) {
+                    break;
+                }
+            }
+        } while (fail);
+    };
+
+    var init64 = function () {
+        players = [
+            {bla: 0, gre: 0, whi: 0, blu: 0, red: 0, yel: 0, pin: 0, ora: 0},
+            {bla: 0, gre: 0, whi: 0, blu: 0, red: 0, yel: 0, pin: 0, ora: 0}
+        ];
+        size = 8;
+        current = 0;
+        balls = 36;
+        colors = {none: 0, bla: 1, gre: 2, whi: 3, blu: 4, red: 5, yel: 6, pin: 7, ora: 8};
+        winner = false;
+
+        initRandomBoard();
+    };
+
     var merde = function (caca, vaTeFaire) {
         if (caca.indexOf(vaTeFaire) === -1) {
             caca.push(vaTeFaire);
@@ -261,10 +355,15 @@ var Engine = function (intermediaire) {
         var res = this.getnBCase();
         return (res === 0 ) ? true : false;
     };
-
-    if (intermediaire) {
+    this.getCaseb = function (i,j) {
+        return board[i][j];
+    };
+    if (intermediaire ) {
         initI();
-    } else {
+    } else if (xl ) {
+
+        init64();
+    }else{
         init();
     }
 
