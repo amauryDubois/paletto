@@ -244,6 +244,18 @@ var Engine = function (intermediaire) {
         return false;
     };
 
+    this.CheckIfWin = function(){
+        var score = this.getPlayerScore();
+
+        for (var i in score){
+            console.log("score"+score[i]);
+            if (score[i] === 6){
+                return true;
+            }
+        }
+            return false;
+    };
+
     if (intermediaire){
         initI();
     }else{
