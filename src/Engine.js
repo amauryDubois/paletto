@@ -1,7 +1,7 @@
 // author : Amaury Dubois
 'use strict';
 
-var Engine = function () {
+var Engine = function (intermediaire) {
     var plateau, size = 0, nbCase, color, players = [], current;
 
 // private attributes and methods
@@ -16,7 +16,30 @@ var Engine = function () {
             [color.yel, color.blue, color.black, color.red, color.green, color.black]
         ];
     };
+    var placeColorI = function () {
+        plateau = [
+            ['X', 'X', 'X', color.blue, color.red, color.white],
+            ['X', 'X', 'X', color.red, color.yel, 'X'],
+            ['X', 'X', color.blue, color.white, color.black, 'X'],
+            [color.red, color.black, color.red, 'X', 'X', 'X'],
+            ['X', color.green, color.yel, 'X', 'X', 'X'],
+            ['X', 'X', color.black, 'X', 'X', 'X']
+        ];
+    };
+    var initI = function () {
+        var i;
+        players[0] = {black: 0, green: 0, white: 0, blue: 0, red: 0, yel: 0};
+        players[1] = {black: 0, green: 0, white: 0, blue: 0, red: 0, yel: 0};
+        current = 0;
+        nbCase = 14;
+        plateau = new Array(6);
+        size = 6;
 
+        for (i = 0; i < size; i++) {
+            plateau[i] = new Array(6);
+        }
+        placeColorI();
+    };
     var init = function () {
         var i;
         players[0] = {black: 0, green: 0, white: 0, blue: 0, red: 0, yel: 0};
@@ -84,6 +107,13 @@ var Engine = function () {
             }
         }
     };
+    var allowToPlay = function (coup) {
+
+       var cpt =  compterVoisin(coup.line, coup.colone);
+        if (cpt === 1 ){
+            return true;
+        }
+    };
 // public methods
     this.convertCoup = function (coord) {
         var ligne = coord.charCodeAt(1) - 49;
@@ -94,12 +124,27 @@ var Engine = function () {
     this.play = function (coord) {
         var coup = this.convertCoup(coord);
         allowToPlay(coup);
-        this.setPlayerScore(this.getCase(coup.line, coup.colone));
-        this.setCase(coup.line, coup.colone, 'X');
-        nbCase -= 1;
+        if(this.possible(coup)){
+            console.log("c bon");
+            this.setPlayerScore(this.getCase(coup.line, coup.colone));
+            this.setCase(coup.line, coup.colone, 'X');
+            nbCase -= 1;
+            return true;
+        }else{
+            console.log("c pas bon");
+            return false;
+        }
+
 
     };
 
+    this.possible = function (coup) {
+        var cpt = compterVoisin(coup.line, coup.colone);
+        console.log("voisin" + cpt);
+        if ( cpt === 1 ) return true;
+        if (cpt > 2 ) return false;
+        return  this.otherwise(coup);
+    };
     this.getCurrentPlayer = function () {
         return current;
     };
@@ -153,5 +198,60 @@ var Engine = function () {
         }
         return rep;
     };
-    init();
+
+    this.otherwise = function (coup) {
+        var cpt = 0;
+        cpt = compterVoisinBas(coup.line, coup.colone) + compterVoisinHaut(coup.line, coup.colone);
+        if ( cpt === 2) return false ;
+        cpt = 0;
+        cpt = compterVoisinGauche(coup.line, coup.colone) + compterVoisindroit(coup.line, coup.colone);
+        if ( cpt === 2 ) return false ;
+        return this.diagonal(coup);
+    };
+    this.diagonal = function (coup) {
+        var cpt = compterVoisinHaut(coup.line, coup.colone) + compterVoisindroit(coup.line, coup.colone);
+        if (cpt === 2) return this.diagonalHD(coup);
+        cpt = compterVoisinHaut(coup.line, coup.colone) + compterVoisinGauche(coup.line, coup.colone);
+        if (cpt === 2) return this.diagonalHG(coup);
+        cpt = compterVoisinBas(coup.line, coup.colone) + compterVoisindroit(coup.line, coup.colone);
+        if (cpt === 2) return this.diagonalBD(coup);
+        cpt = compterVoisinBas(coup.line, coup.colone) + compterVoisinGauche(coup.line, coup.colone);
+        if (cpt === 2) return this.diagonalBG(coup);
+    };
+    this.diagonalHD = function (coup) {
+        if( this.getCase(coup.line-1, coup.colone+1) != "X" ){
+            return true;
+        }
+        return false;
+    };
+    this.diagonalHG = function (coup) {
+        if( this.getCase(coup.line-1, coup.colone-1) != "X" ){
+            return true;
+        }
+        return false;
+    };
+    this.diagonalBD = function (coup) {
+        console.log(this.getCase(coup.line+1, coup.colone+1) );
+        if( this.getCase(coup.line+1, coup.colone+1) != "X" ){
+            return true;
+        }
+        return false;
+    };
+    this.diagonalBG = function (coup) {
+        if( this.getCase(coup.line+1, coup.colone-1) != "X" ){
+            return true;
+        }
+        return false;
+    };
+
+    if (intermediaire){
+        initI();
+    }else{
+        init();
+    }
+
 };
+
+
+
+
