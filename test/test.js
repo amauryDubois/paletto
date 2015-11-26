@@ -71,3 +71,9 @@ PalettoTestCase.prototype.testStory6 = function () {
 
    assertTrue(engine.CheckIfWin());
 };
+
+PalettoTestCase.prototype.testStory7= function () {
+
+    var engine = new Engine(false);
+
+};
